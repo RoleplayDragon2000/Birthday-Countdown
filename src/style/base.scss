@@ -1,0 +1,42 @@
+$color-blue-one: #5496e6;
+$color-blue-two: #518bde;
+$color-yellow-one: #f7d754;
+$color-gray-one: #444;
+$color-gray-two: #e6e6e6;
+$font-roboto: "Roboto Condensed";
+$font-mont: "Montserrat";
+
+.grid {
+    display: grid;
+    grid-template-rows: repeat(4, minmax(200px, 1fr));
+    grid-template-columns: repeat(11, minmax(150px, 1fr));
+    height: 100vh;
+    width: 100vw;
+    
+      &__title {
+        grid-row: 1/2;
+        grid-column: 1/4;
+
+        justify-self: center;
+        
+        font-size: 18px;
+        font-family: $font-mont;
+        color: white; 
+        font-weight: 300;
+        line-height: 22px;
+        padding: 55px 75px;
+        }
+
+      &__remaining {
+        grid-row: 4/-1;
+        grid-column: 1/-1;
+
+        text-align: center;
+        margin-top: 33px;
+        color: $color-gray-one;
+        font-family: $font-mont;
+        font-size: 22px;
+        font-weight: 300;
+        text-align: center;
+      }
+    }
