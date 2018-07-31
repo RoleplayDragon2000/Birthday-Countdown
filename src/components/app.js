@@ -22,32 +22,58 @@ export default class App extends Component {
        hours: 0,
        minutes: 0,
        seconds: 0,
-     }
+     },
+     age: 0,
    }
  }
 
  handleChange = function(date) {
-  console.log('trying to change date for', date._d);
+  clearInterval(this.timer)
   this.setState({
     startDate: date
   });
 }.bind(this)
 
 handleGenerate = function() {
-  this.setState({ active: true })
+
+  var bday = this.state.startDate.toDate();
+  var today = new Date();
+  var currentMonth = today.getMonth();
+  var birthMonth = bday.getMonth();
+
+  var timeBetween = today.getTime() - bday.getTime();
+  var daysOld = Math.floor(timeBetween / (1000 *60 *60 * 24))
+  var age = Number((daysOld/365).toFixed(0));
+  this.setState({
+    age,
+    active: true })
+
+  if(birthMonth > currentMonth) {
+    bday.setFullYear(today.getFullYear())
+  } else if(birthMonth < currentMonth) {
+    bday.setFullYear(today.getFullYear() + 1)
+  } else if(birthMonth == currentMonth) {
+    var currentDay = today.getDate();
+    var birthDay = bday.getDate();
+  }
+
+  if(birthDay > currentDay) {
+    bday.setFullYear(today.getFullYear())
+  } else if (birthDay <= currentDay) {
+    bday.setFullYear(today.getFullYear() + 1)
+  }
 
   var countDownDate = this.state.startDate.toDate().getTime();
-
+  
   this.timer = setInterval(function() {
 
-  var now = new Date().getTime()
+    var now = today.getTime()
+    var distance = countDownDate - now;
 
-  var distance = countDownDate - now;
-
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 *24)) / (1000 * 60 *60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor ((distance % (1000 * 60)) / 1000); 
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 *24)) / (1000 * 60 *60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor ((distance % (1000 * 60)) / 1000); 
 
   const time = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 
@@ -71,7 +97,7 @@ handleGenerate = function() {
       <Clock timeRemaining = {this.state.timeRemaining}/>, 
       ChangeDate('Change Date', () => this.setState({active: false})),
       LargeText('04/03'), 
-      <label className="grid__remaining">Remaning until your 18th birthday</label>
+      <label className="grid__remaining">Remaning until your {this.state.age} birthday</label>
     ];
   } else {
     return [
